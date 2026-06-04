@@ -13,21 +13,21 @@ jobs:
       - name: Set up SSH agent
         uses: webfactory/ssh-agent@v0.9.0
         with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          ssh-private-key: ${{ secrets.SSH_KEY }}
 
       - name: Configure SSH Known Hosts
         run: |
           mkdir -p ~/.ssh
-          ssh-keyscan -H "${{ secrets.SERVER_HOST }}" >> ~/.ssh/known_hosts
+          ssh-keyscan -H "${{ secrets.HOST }}" >> ~/.ssh/known_hosts
 
       - name: Copy files to VPS
         run: |
-          ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} "mkdir -p /srv/api"
-          rsync -r --delete docker-compose.yml app nginx scripts ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/srv/api/
+          ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} "mkdir -p /srv/api"
+          rsync -r --delete docker-compose.yml app nginx scripts ${{ secrets.USERNAME }}@${{ secrets.HOST }}:/srv/api
 
       - name: Deploy on VPS
         run: |
-          ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} << 'EOF'
+          ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} << 'EOF'
             cd /srv/api
             cat <<ENV > .env
             POSTGRES_USER=${{ secrets.POSTGRES_USER }}
