@@ -6,7 +6,7 @@ A production-ready, containerized FastAPI application acting as an AI model prox
 
 ## Key Features
 
-* **FastAPI Application**: Extensible gateway serving text summarization models.
+* **FastAPI Application**: Extensible gateway serving text summarization models..
 * **Semantic/Exact Caching**: Integrates with Redis to store prompt-to-response mapping, reducing AI API invocation costs and latency.
 * **Audit Logging**: Persists request stats (IP address, prompt, cache-hit, processing duration) in PostgreSQL.
 * **Proxy Hardening**: Nginx handles rate limiting (10 reqs/sec), gzip compression, HTTP/HTTPS forwarding, and custom connection logging.
