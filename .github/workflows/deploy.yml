@@ -22,13 +22,13 @@ jobs:
 
       - name: Copy files to VPS
         run: |
-          ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} "mkdir -p /srv/api"
-          rsync -r --delete docker-compose.yml app nginx scripts ${{ secrets.USERNAME }}@${{ secrets.HOST }}:/srv/api
+          ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} "mkdir -p ~/api"
+          rsync -r --delete docker-compose.yml app nginx scripts ${{ secrets.USERNAME }}@${{ secrets.HOST }}:~/api
 
       - name: Deploy on VPS
         run: |
           ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} << 'EOF'
-            cd /srv/api
+            cd ~/api
             cat <<ENV > .env
             POSTGRES_USER=${{ secrets.POSTGRES_USER }}
             POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
