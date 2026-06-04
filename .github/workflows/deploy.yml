@@ -27,16 +27,22 @@ jobs:
 
       - name: Deploy on VPS
         run: |
-          ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} << 'EOF'
-            cd ~/api
-            cat <<ENV > .env
-            POSTGRES_USER=${{ secrets.POSTGRES_USER }}
-            POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
-            POSTGRES_DB=${{ secrets.POSTGRES_DB }}
-            REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }}
-            HF_API_TOKEN=${{ secrets.HF_API_TOKEN }}
-            API_SECRET_KEY=${{ secrets.API_SECRET_KEY }}
-            ENV
-            chmod +x scripts/*.sh
-            docker compose up -d --build
+          ssh ${{ secrets.USERNAME }}@${{ secrets.HOST }} <<EOF
+          cd ~/api
+
+          cat > .env <<EOL
+          POSTGRES_USER=${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_DB=${{ secrets.POSTGRES_DB }}
+          REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }}
+          HF_API_TOKEN=${{ secrets.HF_API_TOKEN }}
+          API_SECRET_KEY=${{ secrets.API_SECRET_KEY }}
+          EOL
+
+          chmod +x scripts/*.sh
+
+          docker compose down
+          docker compose up -d --build
+
+          docker ps
           EOF
